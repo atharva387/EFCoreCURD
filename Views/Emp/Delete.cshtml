@@ -1,0 +1,23 @@
+﻿@model EFCoreCURD.Models.Employee
+@{
+    ViewData["Title"] = "Delete";
+}
+<h1>Delete</h1>
+<div class="alert alert-warning">Are you sure?</div>
+<dl class="row">
+    <dt class="col-sm-3">Emp No</dt>
+    <dd class="col-sm-9">@Model.EmployeeNumber</dd>
+    <dt class="col-sm-3">Name</dt>
+    <dd class="col-sm-9">@Model.EmployeeName</dd>
+    <dt class="col-sm-3">Salary</dt>
+    <dd class="col-sm-9">@Model.Salary</dd>
+    <dt class="col-sm-3">Job</dt>
+    <dd class="col-sm-9">@Model.Job</dd>
+    <dt class="col-sm-3">Department</dt>
+    <dd class="col-sm-9">@Model.DepartmentName</dd>
+</dl>
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="EmployeeNumber" />
+    <button class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
