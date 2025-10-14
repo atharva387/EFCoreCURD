@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EFCoreCURD")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3f3ebe1edb362c84be94f0343818d6c149c9bbca")]
 [assembly: System.Reflection.AssemblyProductAttribute("EFCoreCURD")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EFCoreCURD")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
