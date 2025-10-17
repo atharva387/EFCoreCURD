@@ -8,5 +8,6 @@
 			public CompanyDbContext(DbContextOptions<CompanyDbContext> options) : base(options) { }
 
 			public DbSet<Employee> Employees => Set<Employee>();
-		}
+			 public DbSet<Department> Departments => Set<Department>();
+    }
 	}

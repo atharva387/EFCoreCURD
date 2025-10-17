@@ -1,10 +1,11 @@
 ﻿using System.Linq;
-using EFCoreCURD.Data;               // <-- your project name
-using EFCoreCURD.Models;             // <-- your project name
+using EFCoreCURD.Data;
+using EFCoreCURD.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore; // for EntityState and AsNoTracking
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace EFCoreCURD.Controllers      // <-- your project name
+namespace EFCoreCURD.Controllers
 {
     public class EmpController : Controller
     {
@@ -14,35 +15,74 @@ namespace EFCoreCURD.Controllers      // <-- your project name
         public IActionResult Index()
         {
             var emps = _db.Employees.AsNoTracking().ToList();
+            ViewBag.Departments = _db.Departments.AsNoTracking().ToList();
             return View(emps);
         }
 
-        public IActionResult Create() => View();
+        // ---------- CREATE ----------
+        // GET
+        public IActionResult Create()
+        {
+            ViewBag.Departments = new SelectList(
+                _db.Departments.AsNoTracking().OrderBy(d => d.DepartmentName).ToList(),
+                "DepartmentName",   // value
+                "DepartmentName"    // text
+            );
+            return View();
+        }
 
+        // POST
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Create(Employee emp)
         {
-            if (!ModelState.IsValid) return View(emp);
+            if (!ModelState.IsValid)
+            {
+                // re-populate dropdown when returning the view
+                ViewBag.Departments = new SelectList(
+                    _db.Departments.AsNoTracking().OrderBy(d => d.DepartmentName).ToList(),
+                    "DepartmentName", "DepartmentName", emp.DepartmentName
+                );
+                return View(emp);
+            }
+
             _db.Employees.Add(emp);
             _db.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
+        // ---------- EDIT ----------
+        // GET
         public IActionResult Edit(int id)
         {
             var emp = _db.Employees.Find(id);
-            return emp is null ? NotFound() : View(emp);
+            if (emp is null) return NotFound();
+
+            ViewBag.Departments = new SelectList(
+                _db.Departments.AsNoTracking().OrderBy(d => d.DepartmentName).ToList(),
+                "DepartmentName", "DepartmentName", emp.DepartmentName
+            );
+            return View(emp);
         }
 
+        // POST
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Edit(Employee emp)
         {
-            if (!ModelState.IsValid) return View(emp);
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Departments = new SelectList(
+                    _db.Departments.AsNoTracking().OrderBy(d => d.DepartmentName).ToList(),
+                    "DepartmentName", "DepartmentName", emp.DepartmentName
+                );
+                return View(emp);
+            }
+
             _db.Entry(emp).State = EntityState.Modified;
             _db.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
+        // ---------- DELETE ----------
         public IActionResult Delete(int id)
         {
             var emp = _db.Employees.Find(id);
